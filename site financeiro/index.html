@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financeiro Pessoal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-family: 'Inter', sans-serif;
+      color: #1E1E1E;
+    }
+
+    body {
+      background-color: #F8F9FA;
+      padding: 1rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: #003366;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #FFFFFF;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    label {
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #CED4DA;
+      border-radius: 4px;
+      font-size: 1rem;
+      margin-top: 0.25rem;
+    }
+
+    button {
+      background-color: #28A745;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .resultado {
+      background-color: #E9F7EF;
+      padding: 1rem;
+      border: 1px solid #28A745;
+      border-radius: 6px;
+    }
+
+    @media (min-width: 768px) {
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Simulador de Finanças Pessoais</h1>
+    <p>Controle seus gastos e planeje seu mês com inteligência.</p>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <div>
+        <label for="salario">Salário (Kz)</label>
+        <input type="number" id="salario" />
+      </div>
+      <div>
+        <label for="aluguel">Aluguel (Kz)</label>
+        <input type="number" id="aluguel" />
+      </div>
+      <div>
+        <label for="luz">Luz (Kz)</label>
+        <input type="number" id="luz" />
+      </div>
+      <div>
+        <label for="internet">Internet (Kz)</label>
+        <input type="number" id="internet" />
+      </div>
+      <div>
+        <label for="comida">Comida (Kz)</label>
+        <input type="number" id="comida" />
+      </div>
+      <div>
+        <label for="extras">Outros Gastos (Kz)</label>
+        <input type="number" id="extras" />
+      </div>
+    </div>
+    
+    <button onclick="calcularFinancas()">Calcular</button>
+
+    <section class="resultado" id="resultado" style="display:none;"></section>
+  </main>
+
+  <script>
+    function calcularFinancas() {
+      let salario = Number(document.getElementById('salario').value);
+      let aluguel = Number(document.getElementById('aluguel').value);
+      let luz = Number(document.getElementById('luz').value);
+      let internet = Number(document.getElementById('internet').value);
+      let comida = Number(document.getElementById('comida').value);
+      let extras = Number(document.getElementById('extras').value);
+
+      let totalGastos = aluguel + luz + internet + comida + extras;
+      let saldo = salario - totalGastos;
+      let mediaDia = saldo / 30;
+      let alerta = saldo < 5000 ? '<strong style="color:red">⚠️ Atenção: saldo crítico!</strong>' : '';
+
+      let html = `
+        <p>Total de gastos: <strong>${totalGastos.toFixed(2)} Kz</strong></p>
+        <p>Saldo restante: <strong>${saldo.toFixed(2)} Kz</strong></p>
+        <p>Gasto médio por dia: <strong>${mediaDia.toFixed(2)} Kz</strong></p>
+        <p>${alerta}</p>
+      `;
+
+      let resultado = document.getElementById('resultado');
+      resultado.style.display = 'block';
+      resultado.innerHTML = html;
+    }
+  </script>
+</body>
+</html>

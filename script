@@ -1,0 +1,57 @@
+const resultadoEl = document.getElementById("resultado");
+const toggleModo = document.getElementById("toggleModo");
+const graficoEl = document.getElementById("graficoPizza");
+let grafico;
+
+toggleModo.addEventListener("change", () => {
+    document.body.classList.toggle("dark-mode");
+});
+
+function calcularFinancas() {
+    const salario = +document.getElementById("salario").value;
+    const aluguel = +document.getElementById("aluguel").value;
+    const luz = +document.getElementById("luz").value;
+    const internet = +document.getElementById("internet").value;
+    const comida = +document.getElementById("comida").value;
+    const extras = +document.getElementById("extras").value;
+
+    const total = aluguel + luz + internet + comida + extras;
+    const saldo = salario - total;
+    const mediaDia = saldo / 30;
+
+    const alerta = saldo < 5000 ? '<strong style="color:red">⚠️ Atenção: saldo crítico!</strong>' : '';
+
+    resultadoEl.innerHTML = `
+    <p>Total de gastos: <strong>${total.toFixed(2)} Kz</strong></p>
+    <p>Saldo restante: <strong>${saldo.toFixed(2)} Kz</strong></p>
+    <p>Gasto médio por dia: <strong>${mediaDia.toFixed(2)} Kz</strong></p>
+    <p>${alerta}</p>
+    `;
+
+    resultadoEl.style.display = "block";
+
+    if (grafico) grafico.destroy();
+    grafico = new Chart(graficoEl, {
+    type: "pie",
+    data: {
+        labels: ["Aluguel", "Luz", "Internet", "Comida", "Extras"],
+        datasets: [{
+        label: "Distribuição de Gastos",
+        data: [aluguel, luz, internet, comida, extras],
+        backgroundColor: [
+            "#007bff",
+            "#ffc107",
+            "#17a2b8",
+            "#dc3545",
+            "#6f42c1"
+        ]
+        }]
+    }
+    });
+}
+
+function resetarCampos() {
+    document.querySelectorAll("input").forEach(input => input.value = "");
+    resultadoEl.style.display = "none";
+    if (grafico) grafico.destroy();
+}
